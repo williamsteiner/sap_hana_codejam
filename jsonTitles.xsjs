@@ -36,7 +36,6 @@ if (!rs.next()) {
 output = output + "</br></br> Displaying  all rows now: </br></br>";
 do {
 	output = output + rs.getString(1) + ' ' + rs.getString(2) + ' ' + rs.getString(3) + ' ' + rs.getString(4) + '<br>';
-
 	oResult.push({
 		"ID": rs.getString(1),
 		"Title": rs.getString(2)
@@ -45,68 +44,53 @@ do {
 } while (rs.next())
 // add json to output
 output = JSON.stringify(oResult);
+logMe('all rows: ' + output);
 
 // crud part
 try {
 	// todo refactor to switch
 	switch (paramAction) {
 		case "update":
-			// code block
+			response = JSON.stringify({
+				"title": paramTitle
+			});
+
+			pstmt = conn.prepareStatement("update \"MYCJ\".\"codejam.data::mydata.Book\"   set BOOKNAME = ? where ID = ?");
+			pstmt.setString(1, paramTitle);
+			pstmt.setInt(2, paramID);
+			pstmt.execute();
+			conn.commit();
 			break;
 		case "insert":
-			// code block
+			response = JSON.stringify({
+				"title": paramTitle
+			});
+
+			pstmt = conn.prepareStatement("INSERT INTO \"MYCJ\".\"codejam.data::mydata.Book\" VALUES (?, ?, 'Educational', CURDATE() )");
+			pstmt.setInt(1, 6);
+			pstmt.setString(2, paramTitle);
+			pstmt.execute();
+			conn.commit();
 			break;
+			
 		case "delete":
-			// code block
+		    response = JSON.stringify({
+				"Deleted ID": paramID
+			});
+			
+			pstmt = conn.prepareStatement("DELETE from \"MYCJ\".\"codejam.data::mydata.Book\"  where ID = ?");
+			pstmt.setInt(1, paramID);
+			pstmt.execute();
+			conn.commit();
 			break;
 		default:
-			// code block
+			response = output;
 	}
 
-	// update
-	if ($.request.parameters.get("action") === 'update') {
-		let paramTitle = $.request.parameters.get("Title");
-
-		response = JSON.stringify({
-			"title": paramTitle
-		});
-
-		pstmt = conn.prepareStatement("update \"MYCJ\".\"codejam.data::mydata.Book\"   set BOOKNAME = ? where ID = ?");
-		pstmt.setString(1, paramTitle);
-		pstmt.setInt(2, paramID);
-		pstmt.execute();
-		conn.commit();
-		//pstmt.close(); // closed at end// this causes a failure
-	} else {
-		response = output;
-	}
-
-	// insert
-	if ($.request.parameters.get("action") === 'insert') {
-		pstmt = conn.prepareStatement("INSERT INTO \"MYCJ\".\"codejam.data::mydata.Book\" VALUES (?, ?, 'Educational', CURDATE() )");
-		pstmt.setInt(1, 6);
-		pstmt.setString(2, paramTitle);
-		pstmt.execute();
-		conn.commit();
-	}
-
-	// delete
-	if ($.request.parameters.get("action") === 'delete') {
-		pstmt = conn.prepareStatement("DELETE from \"MYCJ\".\"codejam.data::mydata.Book\"  where ID = ?");
-		pstmt.setInt(1, paramID);
-		pstmt.execute();
-		conn.commit();
-	}
-
-	//Close the database connection
-	//rs.close();
-	//pstmt.close();
-	//conn.close();
-
+	// build response
 	$.response.status = 200;
 	$.response.setBody(response);
-//	$.response.contentType = "application/json";
-//	$.response.headers.set("Access-Control-Allow-Origin", "*");
+
 } catch (e) {
 	let code = getStatusCode(e.message);
 	logMe('caught error code: ' + code + ', message: ' + e.message);
