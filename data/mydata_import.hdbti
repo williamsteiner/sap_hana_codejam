@@ -1,0 +1,7 @@
+import	= 	[
+    			{
+					cdstable  =	"codejam.data::mydata.Book";
+					file = "codejam.data:sample_book_list.csv"; 	     
+					header = false;		
+    			}
+     		];

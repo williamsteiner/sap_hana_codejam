@@ -1,0 +1,89 @@
+<!-- Test: https://hanatestap2000584808trial.hanatrial.ondemand.com/codejam/ -->
+
+<!-- Test: http://example.com/ajax_hana_codejam_getjson.html -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script> <!-- jquery -->
+<style type="text/css"></style> <!-- CSS -->
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //alert(location.host);
+
+
+        $(".button_click").click(function () {
+            let url = "https://hanatestap2000584808trial.hanatrial.ondemand.com/codejam/jsonTitles.xsjs";
+            var data = {};
+            console.log('action: ' + this.id);
+            switch (this.id) {
+                case 'get':
+                    data = {'action': this.id};
+                    callHanaApi(url, 'GET', data);
+                    break;
+                case 'update':
+                    if(validInput(this.id)) {
+                        data = {'action': this.id, 'Title': $('#update_input').val(), 'ID': 5};
+                    }
+                    callHanaApi(url, 'POST', data);
+                    break;
+                case 'insert':
+                    if(validInput(this.id)) {
+                        data = {'action': this.id, 'Title': $('#insert_input').val()};
+                    }
+                    callHanaApi(url, 'POST', data);
+                    break;
+                case 'delete':
+                    data = {'action': this.id, 'ID': 6};
+                    callHanaApi(url, 'POST', data);
+                    break;
+                default:
+            }
+        });
+    });
+
+    // ----------------- functions -----------------
+
+    function validInput(id){
+        //alert($('#'+id+"_input").val());
+        if($('#'+id+"_input").val()){
+            return true;
+        } else {
+            alert("Value is mandatory");
+            return false;
+        }
+    }
+
+
+    function callHanaApi(url, type = 'GET', data = null) {
+        $.ajax({
+            url: url,
+            dataType: 'json',
+            crossDomain: true,
+            data: data,
+            type: type,      // type: 'GET','POST', // type: 'PUT',  fails with cors error
+            async: false,
+            success: callback_s,
+            error: callback_e
+        });
+        // success
+        function callback_s(cb) {
+            console.log('success: ' + JSON.stringify(cb));
+            if (cb.hasOwnProperty('title')) {
+                $('#api_response').html("New book title: " + cb.title);
+            } else {
+                $('#api_response').html(JSON.stringify(cb));
+            }
+        }
+        // error
+        function callback_e(cb) {
+            alert('Error: ' + JSON.stringify(cb.responseText + ' Status: ' + cb.status + " (" + cb.statusText + ")"));
+        }
+    }
+</script>
+
+<button id="get" type="button" class="button_click">Click to get HANA data</button><br><br>
+<input id="update_input" type="text" placeholder="Enter Book Title"/>
+<button id="update" type="button" class="button_click">Update Title row id 5</button><br><br>
+<input id="insert_input" type="text" class="left" size="10" placeholder="Enter Book Title"/>
+<button id="insert" type="button" class="button_click">Create new row id 6</button><br><br>
+<button id="delete" type="button" class="button_click">Delete row id 6</button><br><br>
+<div id="api_response"></div>
+ 
