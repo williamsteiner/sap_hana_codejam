@@ -2,7 +2,7 @@
 
 -- insert into test_user values('bill steiner');
 
--- sehlect * from test
+-- select * from test
 
 
 
