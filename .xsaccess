@@ -2,4 +2,32 @@
 	"exposed" : true,
 	"authentication" : null,
 	"anonymous_connection":"codejam::Anonymous_Access"
+	
+	,"rewrite_rules" : [
+       {
+           "source": "/getRows",
+           "target": "/jsonTitles.xsjs?action=get"
+        },
+        {
+           "source": "/action/(.*)",
+           "target": "/jsonTitles.xsjs?action=$1"
+        }
+    ]
+       
+    ,"force_ssl" : false
+    ,"enable_etags" : false
+    ,"prevent_xsrf" : false  
+ 
+    ,"cors":{"enabled":true,"allowMethods": ["GET","POST","HEAD","OPTIONS"],"allowOrigin": ["*"], "maxAge":"3600"}
+      
+    ,"cache_control" : "no-cache, no-store"
+    ,"headers":      
+       {
+       "enabled": false, 
+       "customHeaders": 
+          [ {
+            "name":"X-Frame-Options","value":"SAMEORIGIN"
+          } ]
+       }
+       
 }

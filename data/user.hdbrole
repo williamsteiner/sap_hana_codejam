@@ -1,7 +1,4 @@
 role codejam.data::user
 {
-catalog sql object "MYCJ"."codejam.data::mydata.Book": //Objecttype: TABLE
-	SELECT, INSERT, UPDATE, DELETE;
-
-
+catalog sql object "MYCJ"."codejam.data::mydata.Book":  SELECT, INSERT, UPDATE, DELETE;
 }
