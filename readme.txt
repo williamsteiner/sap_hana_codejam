@@ -34,6 +34,26 @@ When you activate an application artifact, the file extension (for example, .hdb
 to call during the activation process. The plug-in reads the repository artifact selected for activation (for example, a table definition, a complete CDS document, 
 or server-side JavaScript code), interprets the object description in the file, and creates the appropriate runtime object in the designated catalog schema.
 
+------------- XS Advanced (cf) vs XS Classic (neo) -----------------
+https://blogs.sap.com/2019/02/24/sap-cloud-platform-environment-cloud-foundry-vs-neo/
+
+
+The XS Advanced Programming Model
+Writing applications for deployment to SAP HANA XS advanced.
+
+SAP HANA Extended Application Services advanced model (XS advanced) adds an application platform to the SAP HANA in-memory database. 
+In the Cloud, this platform is provided by Cloud Foundry. An SAP-developed run-time environment is bundled with SAP HANA on-premise 
+which provides a compatible platform that enables applications to be deployed to both worlds: the Cloud and on-premise. 
+XS advanced is optimized for simple deployment and the operation of business applications that need to be deployed in both worlds. 
+For this reason, the XS advanced programming model fully embraces the Cloud Foundry model and leverages its concepts and technologies. 
+In areas where Cloud Foundry as an intentionally generic platform for distributed Web applications does not address relevant topics 
+or offers choice, the XS advanced programming model provides guidance that is in line with the general Cloud programming model.
+
+XS advanced is a polyglot application platform that supports several programming languages and execution environments, for example, 
+Java and Node.js. The classic XS JavaScript (XSJS) is supported by a framework running in the Node.js run time.
+
+
+
 -------------------------------- SETUP --------------------------------
 Make sure your trial subaccount is Europe (ROT) trial
 When creating new Hana DB, do not select dp server - web server only
@@ -56,9 +76,20 @@ sap.hana.ide.roles::TraceViewer
 sap.hana.xs.debugger::Debugger
 sap.hana.ide.roles::Developer
 
-Object priviledges:
+-- Object priviledges:
 
 codejam.data::mydata.Book (MYCJ)  ??? not sure needed
+
+-- Application privledges:
+customer5::Execute
+
+-- the above is mandatory to run once .xsaccess entry below is added:
+"authorization":[ "customer5::Execute"], 
+-- which MUST match the entries in the .xspivileges file
+"privileges": [
+  {"name": "Execute", "description": "Execute"} 
+]
+
  
 --------------------------------
 ---------- codejam demo created user  
