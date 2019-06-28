@@ -1,8 +1,10 @@
+-- v1
+
 -- create table test_user(name varchar(50));
 
 -- insert into test_user values('bill steiner');
 
--- select * from test
+-- sehlect * from test
 
 
 
@@ -37,7 +39,9 @@ INSERT into "MYCJ"."codejam.data::mydata.Book" (BOOKNAME,CATEGORY,INVDATE) value
     
 INSERT INTO "MYCJ"."codejam.data::mydata.Book" VALUES (6, 'My Test Book', 'test cat', CURDATE() );
 
+CREATE COLUMN TABLE "NEO_ALIEN"."PERSONAL" ("EMAIL" NVARCHAR(30), "FIRSTNAME" NVARCHAR(30), "LASTNAME" NVARCHAR(30), "AGE" NVARCHAR(3), "ADDRESS" NVARCHAR(50))
 
+ INSERT INTO "NEO_ALIEN"."PERSONAL" VALUES( 'dirk.brian@example.com', 'Dirk', 'Brian', '49', 'Exeter, England');
 
 
  

@@ -21,14 +21,16 @@
                 case 'update':
                     if(validInput(this.id)) {
                         data = {'action': this.id, 'Title': $('#update_input').val(), 'ID': 5};
+                        callHanaApi(url, 'POST', data);
                     }
-                    callHanaApi(url, 'POST', data);
+
                     break;
                 case 'insert':
                     if(validInput(this.id)) {
                         data = {'action': this.id, 'Title': $('#insert_input').val()};
+                        callHanaApi(url, 'POST', data);
                     }
-                    callHanaApi(url, 'POST', data);
+
                     break;
                 case 'delete':
                     data = {'action': this.id, 'ID': 6};
